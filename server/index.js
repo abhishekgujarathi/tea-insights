@@ -18,8 +18,8 @@ import { callLangFlowAsk as langFlowAsk, callMain } from "./langflow_utils.js";
 import dotenv from "dotenv";
 dotenv.config(); // Load environment variables
 
-const __filename = __filename || path.join(__dirname, path.basename(process.argv[1]));
-const __dirname = __dirname || path.dirname(__filename);
+const base_filename = base_filename || path.join(base_dirname, path.basename(process.argv[1]));
+const base_dirname = base_dirname || path.dirname(base_filename);
 
 
 const app = express();
@@ -52,11 +52,13 @@ app.use(
 // ----------------- multer setup-------------------------------------
 
 // Ensure the "uploads" folder exists
-const uploadDir = "uploads/";
+const uploadDir = path.join(base_dirname, "uploads");
+
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
   console.log("Uploads directory created.");
 }
+
 
 // Multer setup for file storage
 const file_storage = multer.diskStorage({
