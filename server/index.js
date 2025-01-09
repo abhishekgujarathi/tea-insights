@@ -18,6 +18,10 @@ import { callLangFlowAsk as langFlowAsk, callMain } from "./langflow_utils.js";
 import dotenv from "dotenv";
 dotenv.config(); // Load environment variables
 
+const __filename = __filename || path.join(__dirname, path.basename(process.argv[1]));
+const __dirname = __dirname || path.dirname(__filename);
+
+
 const app = express();
 
 app.use(
@@ -46,12 +50,6 @@ app.use(
 );
 
 // ----------------- multer setup-------------------------------------
-// __filename: Full path to the current file
-const __filename =
-  __filename || path.join(__dirname, path.basename(process.argv[1]));
-
-// __dirname: Directory of the current file
-const __dirname = __dirname || path.dirname(__filename);
 
 // Ensure the "uploads" folder exists
 const uploadDir = "uploads/";
