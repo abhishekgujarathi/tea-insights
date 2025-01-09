@@ -80,6 +80,10 @@ const file_upload = multer({ storage: file_storage });
 // ----------------- routes -------------------------------------
 
 // ----------- session create
+app.get("/",(req,res)=>{
+  res.send("working").status(200)
+})
+
 app.get("/test-session-set", (req, res) => {
   // Generate a collection name if it doesn't already exist in the session
   const sessionCollectionName =
