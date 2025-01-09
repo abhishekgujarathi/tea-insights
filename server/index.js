@@ -20,19 +20,19 @@ import dotenv from "dotenv";
 dotenv.config(); // Load environment variables
 
 // Correctly initialize base_filename and base_dirname
-// const base_filename = __filename // Full path to the current file
-// const base_dirname = __dirname // Directory name of the current file
+const base_filename = __filename // Full path to the current file
+const base_dirname = __dirname // Directory name of the current file
 
 // Universal solution to get __filename and __dirname
-const isESM = typeof __filename === "undefined"; // Check if running in ESM
+// const isESM = typeof __filename === "undefined"; // Check if running in ESM
 
-const base_filename = isESM
-  ? fileURLToPath(import.meta.url) // ESM way
-  : __filename; // CommonJS way
+// const base_filename = isESM
+//   ? fileURLToPath(import.meta.url) // ESM way
+//   : __filename; // CommonJS way
 
-const base_dirname = isESM
-  ? dirname(fileURLToPath(import.meta.url)) // ESM way
-  : __dirname; // CommonJS way
+// const base_dirname = isESM
+//   ? dirname(fileURLToPath(import.meta.url)) // ESM way
+//   : __dirname; // CommonJS way
 
 const app = express();
 
