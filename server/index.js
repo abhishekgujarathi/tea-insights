@@ -64,9 +64,16 @@ app.use(
 // ----------------- multer setup-------------------------------------
 
 const file_upload = multer({
-  storage: multer.memoryStorage(), // Use memory storage
+  storage: multer.memoryStorage(), // Store the file in memory as a Buffer
   limits: {
     fileSize: 10 * 1024 * 1024, // Limit file size to 10 MB
+  },
+  fileFilter: (req, file, cb) => {
+    // Optional: Validate file type (e.g., only allow CSV)
+    if (file.mimetype !== 'text/csv') {
+      return cb(new Error('Invalid file type. Only CSV files are allowed.'));
+    }
+    cb(null, true);
   },
 });
 
@@ -101,6 +108,8 @@ app.post("/upload", file_upload.single("file"), async (req, res) => {
     // Access the file content directly from buffer
     const dataString = req.file.buffer.toString("utf-8"); // Convert buffer to string
 
+
+    // return res.send({fileContent: dataString}) 
     // Check for empty data
     if (!dataString) {
       return res.status(400).send({ error: "Empty file content." });
