@@ -52,7 +52,7 @@ app.use(
 // ----------------- multer setup-------------------------------------
 
 // Ensure the "uploads" folder exists
-const uploadDir = path.join(base_dirname, "uploads");
+const uploadDir = path.join(base_dirname, "tmp");
 
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
