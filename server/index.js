@@ -46,8 +46,12 @@ app.use(
 );
 
 // ----------------- multer setup-------------------------------------
+// __filename: Full path to the current file
+const __filename =
+  __filename || path.join(__dirname, path.basename(process.argv[1]));
 
-const __filename = fileURLToPath(import.meta.url);
+// __dirname: Directory of the current file
+const __dirname = __dirname || path.dirname(__filename);
 
 // Ensure the "uploads" folder exists
 const uploadDir = "uploads/";
@@ -80,9 +84,9 @@ const file_upload = multer({ storage: file_storage });
 // ----------------- routes -------------------------------------
 
 // ----------- session create
-app.get("/",(req,res)=>{
-  res.send("working").status(200)
-})
+app.get("/", (req, res) => {
+  res.send("working").status(200);
+});
 
 app.get("/test-session-set", (req, res) => {
   // Generate a collection name if it doesn't already exist in the session
