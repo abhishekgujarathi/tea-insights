@@ -2,11 +2,11 @@ import express from "express";
 import multer, { diskStorage } from "multer";
 import session from "express-session";
 import cors from "cors";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
 import fs from "fs";
 import langflow_sujal from "./langflow/langflow_api_sujal.js";
 import csvParser from "csv-parser";
+import { fileURLToPath } from "url";
+import { dirname, join, basename } from "path";
 
 import {
   createAstraCollection,
@@ -18,9 +18,9 @@ import { callLangFlowAsk as langFlowAsk, callMain } from "./langflow_utils.js";
 import dotenv from "dotenv";
 dotenv.config(); // Load environment variables
 
-const base_filename = base_filename || path.join(base_dirname, path.basename(process.argv[1]));
-const base_dirname = base_dirname || path.dirname(base_filename);
-
+// Correctly initialize base_filename and base_dirname
+const base_filename = fileURLToPath(import.meta.url); // Full path to the current file
+const base_dirname = dirname(base_filename); // Directory name of the current file
 
 const app = express();
 
@@ -58,7 +58,6 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
   console.log("Uploads directory created.");
 }
-
 
 // Multer setup for file storage
 const file_storage = multer.diskStorage({
