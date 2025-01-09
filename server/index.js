@@ -19,8 +19,8 @@ import dotenv from "dotenv";
 dotenv.config(); // Load environment variables
 
 // Correctly initialize base_filename and base_dirname
-const base_filename = fileURLToPath(import.meta.url); // Full path to the current file
-const base_dirname = dirname(base_filename); // Directory name of the current file
+const base_filename = __filename // Full path to the current file
+const base_dirname = __dirname // Directory name of the current file
 
 const app = express();
 
