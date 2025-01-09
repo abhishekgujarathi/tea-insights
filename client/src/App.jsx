@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Preview from "./components/Preview";
 import Home from "./components/Home";
 
+import { ChartProvider } from "./ChartContext";
+
 
 const SERVER_HOSTED_API="http://192.168.1.12:3000"
 
@@ -36,6 +38,7 @@ function App() {
   }, []); // Empty dependency array ensures it runs only once
 
   return (
+    <ChartProvider>
     <Router>
       <Routes>
         {/* Define routes for each component */}
@@ -43,6 +46,7 @@ function App() {
         <Route path="/preview" element={<Preview session={session}/>} />
       </Routes>
     </Router>
+    </ChartProvider>
   );
 }
 

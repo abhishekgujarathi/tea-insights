@@ -6,8 +6,9 @@ import fs from "fs";
 import langflow_sujal from "./langflow/langflow_api_sujal.js";
 import csvParser from "csv-parser";
 
-import path from 'path';
-
+import { fileURLToPath } from "url";
+import path, { dirname } from "path";
+import { Readable } from "stream";
 import {
   createAstraCollection,
   generateUniqueCollectionName,
@@ -19,8 +20,19 @@ import dotenv from "dotenv";
 dotenv.config(); // Load environment variables
 
 // Correctly initialize base_filename and base_dirname
-const base_filename = __filename // Full path to the current file
-const base_dirname = __dirname // Directory name of the current file
+// const base_filename = __filename // Full path to the current file
+// const base_dirname = __dirname // Directory name of the current file
+
+// Universal solution to get __filename and __dirname
+const isESM = typeof __filename === "undefined"; // Check if running in ESM
+
+const base_filename = isESM
+  ? fileURLToPath(import.meta.url) // ESM way
+  : __filename; // CommonJS way
+
+const base_dirname = isESM
+  ? dirname(fileURLToPath(import.meta.url)) // ESM way
+  : __dirname; // CommonJS way
 
 const app = express();
 
@@ -51,32 +63,12 @@ app.use(
 
 // ----------------- multer setup-------------------------------------
 
-// Ensure the "uploads" folder exists
-const uploadDir = path.join(base_dirname, "tmp");
-
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-  console.log("Uploads directory created.");
-}
-
-// Multer setup for file storage
-const file_storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    console.log("Setting file destination...");
-    cb(null, uploadDir); // Folder where files will be stored
-  },
-  filename: (req, file, cb) => {
-    console.log("Setting file name...");
-    const name = req.session.collectionName;
-    const csvName = `${name}.csv`;
-    req.session.collectionName = name; // Store the generated name in the session
-    cb(null, csvName); // Set the file name in the callback
-    console.log(`Generated file name: ${csvName}`);
+const file_upload = multer({
+  storage: multer.memoryStorage(), // Use memory storage
+  limits: {
+    fileSize: 10 * 1024 * 1024, // Limit file size to 10 MB
   },
 });
-
-// Create multer instance
-const file_upload = multer({ storage: file_storage });
 
 // ----------------- multer setup-------------------------------------
 
@@ -102,15 +94,16 @@ app.get("/test-session-set", (req, res) => {
 // ---------- Upload Endpoint
 app.post("/upload", file_upload.single("file"), async (req, res) => {
   try {
-    const filePath = req.file.path; // File path where the file was saved
-    console.log(`File saved at: ${filePath}`);
+    if (!req.file) {
+      return res.status(400).send({ error: "No file uploaded." });
+    }
 
-    // Read the file content from the disk
-    const dataString = fs.readFileSync(filePath, "utf-8"); // Read file content as string
+    // Access the file content directly from buffer
+    const dataString = req.file.buffer.toString("utf-8"); // Convert buffer to string
 
     // Check for empty data
     if (!dataString) {
-      return res.status(400).send({ error: "Empty data" });
+      return res.status(400).send({ error: "Empty file content." });
     }
 
     // Access the collection name from the session
@@ -123,12 +116,13 @@ app.post("/upload", file_upload.single("file"), async (req, res) => {
       // Call a function (e.g., callMain) with the file content and collection name
       const result = await callMain(dataString, collectionName);
 
-      // Send a success response
+      // Send a success response with file content and processing result
       return res.status(200).send({
         success: true,
         message: `Processing completed successfully with collection: ${collectionName}`,
-        result: result, // Optionally include the result
+        result: result, // Optionally include the processing result
         collectionName: collectionName,
+        fileContent: dataString, // Include file content in the response
       });
     } else {
       // Handle missing session data
@@ -243,16 +237,21 @@ app.post("/get-summery", async (req, res) => {
 
 app.post("/fetch-file", (req, res) => {
   const sessionCollectionName = req.session.collectionName;
-  // const sessionCollectionName = "yo_20250109165848_83e6f6fe";
 
-  console.log(sessionCollectionName);
   if (!sessionCollectionName) {
     return res
       .status(400)
       .send({ message: "No file session found. Please upload a file first." });
   }
 
-  const filePath = `./uploads/${sessionCollectionName}.csv`;
+  // Access CSV data directly from req.body
+  const csvData = req.body.fileContent; // Expecting the CSV data as a raw string in req.body.csvData
+
+  if (!csvData) {
+    return res
+      .status(400)
+      .send({ message: "No CSV data provided in request." });
+  }
 
   const results = [];
   let totalLikes = 0;
@@ -260,11 +259,14 @@ app.post("/fetch-file", (req, res) => {
   let totalShares = 0;
   const postTypeTotals = {};
 
-  // Parse the CSV file into JSON and calculate sums
-  fs.createReadStream(filePath)
+  // Convert the CSV string into a readable stream
+  const csvStream = Readable.from(csvData);
+
+  csvStream
     .pipe(csvParser())
     .on("data", (row) => {
       results.push(row);
+
       // Calculate total likes, comments, shares
       totalLikes += parseInt(row.likes, 10) || 0;
       totalComments += parseInt(row.comments, 10) || 0;
@@ -282,7 +284,7 @@ app.post("/fetch-file", (req, res) => {
     .on("end", () => {
       // Prepare the response with file content as JSON and the totals
       res.status(200).send({
-        message: "File processed successfully!",
+        message: "CSV data processed successfully!",
         fileContent: results, // Send the parsed rows as JSON
         totalLikes,
         totalComments,
@@ -291,11 +293,10 @@ app.post("/fetch-file", (req, res) => {
       });
     })
     .on("error", (streamError) => {
-      console.error("Error processing the file:", streamError);
-      res.status(500).send({ message: "Error processing the file" });
+      console.error("Error processing the CSV data:", streamError);
+      res.status(500).send({ message: "Error processing the CSV data" });
     });
 });
-
 // ----------------- routes -------------------------------------
 
 app.post("/fetch", async (req, res) => {

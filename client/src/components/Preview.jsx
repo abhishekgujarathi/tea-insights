@@ -1,12 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import FileUploadComponent from "./FileUploadComponent";
 import ChartView from "./ChartView";
 import ChatApp from "./ChatApp";
 import NavBar from "./NavBar";
 
+
+import ChartContext from "../ChartContext";
+
 const SERVER_HOSTED_API = "http://192.168.1.12:3000";
 
 function Preview() {
+
+  const {
+    fileContent
+  } = useContext(ChartContext);
+
   const [isUploadSuccessful, setIsUploadSuccessful] = useState(false);
   const [session, setSession] = useState("");
   const [error, setError] = useState("");
@@ -39,9 +47,13 @@ function Preview() {
     setIsUploadSuccessful(true);
   };
 
+  console.log("The file content:" ,fileContent)
+
   return (
+
     <div>
-      <NavBar />
+      <NavBar />  
+      <p>Session: {session}</p>
       <ChartView sessionCollectionName={session} />
     </div>
   );

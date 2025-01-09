@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FiUpload } from "react-icons/fi";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import LoadingAnimation from "./UploadLoading";
+import ChartContext from "../ChartContext";
 
 const SERVER_HOSTED_API = "http://192.168.1.12:3000";
 
@@ -9,6 +10,11 @@ const FileUploadComponent = ({ isOpen, onClose }) => {
   const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate(); // Initialize the navigation hook
+
+  const {
+    fileContent,
+    setFileContent,
+  } = useContext(ChartContext);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -43,6 +49,7 @@ const FileUploadComponent = ({ isOpen, onClose }) => {
 
       const data = await response.json();
       console.log("File upload success:", data);
+      setFileContent(data.fileContent)
       alert(`File uploaded successfully: ${data.message}`);
       setIsLoading(false);
 
