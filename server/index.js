@@ -334,6 +334,7 @@ app.post("/fetch", async (req, res) => {
   if (!questionTOAsk) {
     return res.status(400).json({ error: "Input is invalid or missing." });
   }
+  console.log("Right now collection 2: ", sessionCollectionName);
 
   if (sessionCollectionName) {
     try {
@@ -341,9 +342,10 @@ app.post("/fetch", async (req, res) => {
         questionTOAsk,
         sessionCollectionName
       );
+      console.log("Right now collection 3: ", sessionCollectionName);
 
       if (result && result.success) {
-        console.log("Result: ", result);
+      console.log("Right now collection 4: ", sessionCollectionName);
         return res.status(200).json({
           success: true,
           message: `Processing completed successfully with collection: ${sessionCollectionName}`,
