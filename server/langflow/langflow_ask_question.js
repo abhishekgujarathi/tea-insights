@@ -1,4 +1,6 @@
 // Note: Replace *<YOUR_APPLICATION_TOKEN>* with your actual Application token
+const dotenv = require("dotenv");
+dotenv.config();
 
 class LangflowClient {
   constructor(baseURL, applicationToken) {
@@ -122,8 +124,7 @@ async function main(
 ) {
   const flowIdOrName = "105151d3-c1f9-47d8-9fb5-79ad313b0558";
   const langflowId = "3203e051-8a37-49eb-9dda-0225f0f47176";
-  const applicationToken =
-    "AstraCS:PqCtLYNgtQdixnTIZDuZopZC:4b5fe7dd60f890af658e792f345a8b4dd9be08cb1e68e5f7fc765bff7c9dde6c";
+  const applicationToken = process.env.LangflowSujalToken;
   const langflowClient = new LangflowClient(
     "https://api.langflow.astra.datastax.com",
     applicationToken
@@ -134,14 +135,13 @@ async function main(
       "ChatInput-yr5CJ": {},
       "AstraDB-pzKQM": {
         advanced_search_filter: "{}",
-        api_endpoint:
-          "https://74a66f90-7550-48ca-b738-c3d870a57681-us-east-2.apps.astra.datastax.com",
+        api_endpoint: process.env.AstraDB_Url,
         batch_size: null,
         bulk_delete_concurrency: null,
         bulk_insert_batch_concurrency: null,
         bulk_insert_overwrite_concurrency: null,
         collection_indexing_policy: "",
-        collection_name: "yo_20250110070724_f24f80f6",
+        collection_name: `${collectionName}`,
         embedding_choice: "Embedding Model",
         keyspace: "",
         metadata_indexing_exclude: "",
@@ -174,16 +174,41 @@ async function main(
       (message) => console.log("Stream Closed:", message), // onClose
       (error) => console.log("Stream Error:", error) // onError
     );
-    if (!stream && response && response.outputs) {
-      const flowOutputs = response.outputs[0];
+    // if (!stream && response && response.outputs) {
+    //   const flowOutputs = response.outputs[0];
+    //   const firstComponentOutputs = flowOutputs.outputs[0];
+    //   const output = firstComponentOutputs.outputs.message;
+
+    //   console.log("Final Output:", output.message.text);
+    // }
+
+    if (!stream && langResponse && langResponse.outputs) {
+      const flowOutputs = langResponse.outputs[0];
       const firstComponentOutputs = flowOutputs.outputs[0];
       const output = firstComponentOutputs.outputs.message;
 
       console.log("Final Output:", output.message.text);
+
+      return {
+        success: true,
+        message: `successful reply from ${collectionName}`,
+        result: `${output.message.text}`,
+      };
+    } else {
+      return {
+        success: false,
+        message: `Fail to fetch data from ${collectionName}`,
+        result: `fail to fetch data Error : ${response.output}`,
+      };
     }
   } catch (error) {
     console.error("Main Error", error.message);
+    return {
+      success: false,
+      message: `Fail to fetch data from ${collectionName}`,
+      result: `fail to fetch data`,
+    };
   }
 }
 
-module.exports = main
+module.exports = main;
