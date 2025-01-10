@@ -30,7 +30,7 @@ const ChartView = ({ sessionCollectionName, removeSession }) => {
   // const [totalShares, setTotalShares] = useState(0);
 
   const navigate = useNavigate()
-  
+
   const {
     fileContent,
     setFileContent,
@@ -123,14 +123,7 @@ const ChartView = ({ sessionCollectionName, removeSession }) => {
         />
       </Helmet>
       {/* Summary and Question List */}
-      <div className="fixed bottom-8 flex items-center justify-center w-full">
-        <button
-          className="bg-black px-5 py-4 rounded float-end text-white"
-          onClick={handleReUpload}
-        >
-          Reupload
-        </button>
-      </div>
+      
       <div className="flex flex-col justify-evenly">
         <div className="flex flex-col p-4 bg-white text-gray-950 w-full h-fit">
           {/* Chart Container */}
