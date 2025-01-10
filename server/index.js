@@ -14,7 +14,7 @@ import {
   generateUniqueCollectionName,
 } from "./utils.js";
 
-import { callLangFlowAsk as langFlowAsk, callMain } from "./langflow_utils.js";
+import {langFlowAskQuestion, callLangFlowAsk as langFlowAsk, callMain } from "./langflow_utils.js";
 
 import dotenv from "dotenv";
 dotenv.config(); // Load environment variables
@@ -338,16 +338,17 @@ app.post("/fetch", async (req, res) => {
   //   res.status(500).json({ error: "Failed to fetch data from external API" });
   // }
   // -----------------------
-  let collectionName = req.session.collectionName || "NONE";
+  const sessionCollectionName = req.body.collectionName || "NONE";
 
-  console.log("right now collection : ", collectionName);
+  console.log("right now collection : ", sessionCollectionName);
   console.log("right now question : ", req.body.input);
 
   const questionTOAsk = req.body.input;
 
   if (collectionName) {
     try {
-      const result = await langFlowAsk(questionTOAsk, collectionName);
+      // const result = await langFlowAsk(questionTOAsk, collectionName);
+      const result=await langFlowAskQuestion(questionTOAsk,sessionCollectionName)
       // console.log("Bitch", collectionName)
 
       if (result && result.success) {

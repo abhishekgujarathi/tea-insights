@@ -1,5 +1,6 @@
 import langFlowUpload from "./langflow/langflow_dataupload_api.js";
 import langFlowAsk from "./langflow/langflow_api.js";
+import callLangFlowAskQuestion from "./langflow/langflow_ask_question.js";
 
 export async function callLangFlowAsk(inputQuestion, collectionName) {
   try {
@@ -20,6 +21,27 @@ export async function callLangFlowAsk(inputQuestion, collectionName) {
     return result;
   }
 }
+
+export async function langFlowAskQuestion(inputQuestion, collectionName) {
+  try {
+    const result = await callLangFlowAskQuestion(inputQuestion, collectionName);
+
+    console.log("Yoohoho")
+
+    // Check if the result contains a success flag (this depends on how your `main` function works)
+    if (result && result.success) {
+      console.log("Success:", result.message);
+      return result; // Return success message
+    } else {
+      console.log("Error:", result ? result.message : "No message in result");
+      return result; // Return error message
+    }
+  } catch (error) {
+    console.log("Error:", result ? result.message : "No message in result");
+    return result;
+  }
+}
+
 
 // langflow file upload function
 export async function callMain(inputValue, collectionName) {

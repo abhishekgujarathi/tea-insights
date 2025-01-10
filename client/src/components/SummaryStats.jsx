@@ -52,56 +52,68 @@ const SummaryStats = ({ sessionCollectionName }) => {
     getSummery();
   }, [sessionCollectionName]);
 
+  const renderSummaryContent = (text) => {
+    return text.split("\n").map((line, index) => {
+      // For bullet points
+      if (line.startsWith("-")) {
+        const formattedLine = line
+          .substring(2) // Remove the leading "- "
+          .replace(/\*\*(.*?)\*\-/g, "<strong>$1</strong>"); // Replace **text** with <strong>text</strong>
+        
+        return (
+          <div
+            key={index}
+            className="summary-item mb-4 p-4 border-l-4 border-blue-600 bg-gray-100 text-gray-950 rounded-md"
+            dangerouslySetInnerHTML={{ __html: formattedLine }}
+          />
+        );
+      } 
+      // For section headers (###)
+      else if (line.startsWith("###")) {
+        const formattedLine = line
+          .substring(4) // Remove the leading "### "
+          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>"); // Replace **text** with <strong>text</strong>
+        return (
+          <h3
+            key={index}
+            className="text-xl font-semibold mb-3 text-gray-800"
+            dangerouslySetInnerHTML={{ __html: formattedLine }}
+          />
+        );
+      } 
+      // For standalone bold text
+      else if (line.startsWith("**")) {
+        const formattedLine = line.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+        return (
+          <p key={index} className="font-bold text-gray-950 mb-2" dangerouslySetInnerHTML={{ __html: formattedLine }} />
+        );
+      } 
+      // For other general text
+      else {
+        return (
+          <p key={index} className="text-gray-700 mb-2">{line}</p>
+        );
+      }
+    });
+  };
+  
   if (loading) {
     return <div className="loading">Getting summary and stats...</div>;
   }
-
+  
   if (error) {
     return <div className="error">Error in getting summary: {error}</div>;
   }
-
+  
   return (
-    <div className="chatgpt-ui bg-white text-gray-950 p-6 h-fit">
+    <div className="chatgpt-ui bg-white text-gray-950 p-6">
       <div className="response text-lg leading-relaxed p-[35px] rounded-lg border-2 mx-[25px] h-fit">
-        <h2 className="text-2xl font-bold mb-4 h-fit">
-          Post Engagement Summary
-        </h2>
-
-        {/* Splitting the string into sections based on the headers */}
-        {data &&
-          data.split("### ").map((section, index) => {
-            const formattedSection = section.trim();
-
-            // Only display non-empty sections
-            if (formattedSection) {
-              let sectionTitle = formattedSection.split("\n")[0];
-              let sectionContent = formattedSection
-                .substring(sectionTitle.length)
-                .trim();
-
-              return (
-                <div key={index} className="mb-6">
-                  {/* Render the title of the section */}
-                  <h3 className="text-xl font-bold mb-2">{sectionTitle}</h3>
-
-                  {/* Render the content of the section */}
-                  {sectionContent.split("\n").map((line, i) => {
-                    const formattedLine = line.replace(
-                      /\*\*(.*?)\*\*/g,
-                      "<strong>$1</strong>"
-                    );
-                    return (
-                      <p
-                        key={i}
-                        className="mb-4 text-gray-950"
-                        dangerouslySetInnerHTML={{ __html: formattedLine }}
-                      />
-                    );
-                  })}
-                </div>
-              );
-            }
-          })}
+        <h2 className="text-2xl font-bold mb-6">Post Engagement Summary</h2>
+  
+        {summary && renderSummaryContent(summary)}
+  
+        <div className="separator my-6 border-b border-gray-300" />
+        
       </div>
     </div>
   );

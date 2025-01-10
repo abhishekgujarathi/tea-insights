@@ -6,6 +6,7 @@ import SummaryStats from "./SummaryStats";
 import ChatApp from "./ChatApp";
 import PreviewTable from "./DataCSVTable";
 import { Helmet } from "react-helmet";
+import { useNavigate } from "react-router-dom";
 
 import ChartContext from "../ChartContext";
 
@@ -28,6 +29,8 @@ const ChartView = ({ sessionCollectionName, removeSession }) => {
   // const [totalComments, setTotalComments] = useState(0);
   // const [totalShares, setTotalShares] = useState(0);
 
+  const navigate = useNavigate()
+  
   const {
     fileContent,
     setFileContent,
@@ -99,7 +102,8 @@ const ChartView = ({ sessionCollectionName, removeSession }) => {
   };
 
   const handleReUpload = () => {
-    removeSession(false);
+    // removeSession(false);
+    navigate("/"); 
   };
 
   if (error) {
@@ -149,7 +153,7 @@ const ChartView = ({ sessionCollectionName, removeSession }) => {
           </div>
         </div>
         {/* Chat App */}
-        {/* <div className="flex flex-col flex-grow ">
+        <div className="flex flex-col flex-grow ">
           <button
             className="fixed bottom-6 right-6 bg-black hover:bg-gray-300 text-white font-bold h-12 w-12 rounded-full shadow-lg text-xl "
             onClick={() => document.getElementById("my_modal_5").showModal()}
@@ -180,11 +184,11 @@ const ChartView = ({ sessionCollectionName, removeSession }) => {
               </div>
 
               <div className="flex flex-col flex-grow h-full">
-                <ChatApp />
+                <ChatApp sessionCollectionName={sessionCollectionName} />
               </div>
             </div>
           </dialog>
-        </div> */}
+        </div>
       </div>
     </div>
   );

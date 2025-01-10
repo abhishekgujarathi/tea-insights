@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
-const SERVER_HOSTED_API = "http://192.168.1.12:3000";
+const SERVER_HOSTED_API = "https://tea-insights-api.vercel.app";
+// const SERVER_HOSTED_API = "http://192.168.1.12:3000";
 
 // Utility function to parse formatted text
 const parseText = (text) => {
@@ -23,7 +24,7 @@ const parseText = (text) => {
   return formattedText;
 };
 
-const ChatApp = () => {
+const ChatApp = ({ sessionCollectionName }) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,9 +50,13 @@ const ChatApp = () => {
           "Content-Type": "application/json",
         },
         credentials: "include",
+        body: JSON.stringify({
+          collectionName: sessionCollectionName,
+          input: message,
+        }),
       });
 
-      console.log("Hello");
+      console.log("Hello",sessionCollectionName, message);
 
       if (!response.ok) {
         throw new Error("Failed to fetch response from the backend.");
