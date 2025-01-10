@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 // Note: Replace *<YOUR_APPLICATION_TOKEN>* with your actual Application token
+// Note: Replace *<YOUR_APPLICATION_TOKEN>* with your actual Application token
 
 class LangflowClient {
   constructor(baseURL, applicationToken) {
@@ -14,16 +15,16 @@ class LangflowClient {
     headers["Content-Type"] = "application/json";
     const url = `${this.baseURL}${endpoint}`;
     try {
-      const responsee = await fetch(url, {
+      const response = await fetch(url, {
         method: "POST",
         headers: headers,
         body: JSON.stringify(body),
       });
 
-      const responseMessage = await responsee.json();
-      if (!responsee.ok) {
+      const responseMessage = await response.json();
+      if (!response.ok) {
         throw new Error(
-          `${responsee.status} ${responsee.statusText} - ${JSON.stringify(
+          `${response.status} ${response.statusText} - ${JSON.stringify(
             responseMessage
           )}`
         );
@@ -126,7 +127,7 @@ async function main(
 ) {
   const flowIdOrName = "105151d3-c1f9-47d8-9fb5-79ad313b0558";
   const langflowId = "3203e051-8a37-49eb-9dda-0225f0f47176";
-  const applicationToken = process.env.LangflowAskQuestionApiToken;
+  const applicationToken = process.env.LangflowSujalToken;
   const langflowClient = new LangflowClient(
     "https://api.langflow.astra.datastax.com",
     applicationToken
@@ -134,7 +135,9 @@ async function main(
 
   try {
     const tweaks = {
-      "ChatInput-yr5CJ": {},
+      "ChatInput-yr5CJ": {
+        input_value: "least liked post",
+      },
       "AstraDB-pzKQM": {
         advanced_search_filter: "{}",
         api_endpoint: process.env.AstraDB_Url,
@@ -176,36 +179,15 @@ async function main(
       (message) => console.log("Stream Closed:", message), // onClose
       (error) => console.log("Stream Error:", error) // onError
     );
-
     if (!stream && langResponse && langResponse.outputs) {
       const flowOutputs = langResponse.outputs[0];
       const firstComponentOutputs = flowOutputs.outputs[0];
       const output = firstComponentOutputs.outputs.message;
 
       console.log("Final Output:", output.message.text);
-
-      return {
-        success: true,
-        message: `successful reply from ${collectionName}`,
-        result: `${output.message.text}`,
-      };
-    } else {
-      return {
-        success: false,
-        message: `Fail to fetch data from ${collectionName}`,
-        result: `fail to fetch data Error : ${response.output}`,
-      };
     }
   } catch (error) {
     console.error("Main Error", error.message);
-    return {
-      success: false,
-      message: `Fail to fetch data from ${collectionName}`,
-      result: `fail to fetch data`,
-    };
   }
 }
-
-// main("most liked", "yo_20250110070724_f24f80f6");
-
 module.exports = main;
