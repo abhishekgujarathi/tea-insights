@@ -1,6 +1,4 @@
-// Note: Replace **<YOUR_APPLICATION_TOKEN>** with your actual Application token
-const dotenv = require("dotenv");
-dotenv.config();
+// Note: Replace *<YOUR_APPLICATION_TOKEN>* with your actual Application token
 
 class LangflowClient {
   constructor(baseURL, applicationToken) {
@@ -43,7 +41,6 @@ class LangflowClient {
     tweaks = {}
   ) {
     const endpoint = `/lf/${langflowId}/api/v1/run/${flowId}?stream=${stream}`;
-    console.log("running intiation ",endpoint)
     return this.post(endpoint, {
       input_value: inputValue,
       input_type: inputType,
@@ -86,16 +83,6 @@ class LangflowClient {
     onClose,
     onError
   ) {
-    console.log(
-      "running flow",
-      flowIdOrName,
-      langflowId,
-      inputValue,
-      inputType,
-      outputType,
-      stream,
-      tweaks
-    );
     try {
       const initResponse = await this.initiateSession(
         flowIdOrName,
@@ -135,26 +122,26 @@ async function main(
 ) {
   const flowIdOrName = "105151d3-c1f9-47d8-9fb5-79ad313b0558";
   const langflowId = "3203e051-8a37-49eb-9dda-0225f0f47176";
-  const applicationToken = process.env.LangflowSujalToken;
+  const applicationToken =
+    "AstraCS:PqCtLYNgtQdixnTIZDuZopZC:4b5fe7dd60f890af658e792f345a8b4dd9be08cb1e68e5f7fc765bff7c9dde6c";
   const langflowClient = new LangflowClient(
     "https://api.langflow.astra.datastax.com",
     applicationToken
   );
-
-  console.log("mainn 1");
 
   try {
     const tweaks = {
       "ChatInput-yr5CJ": {},
       "AstraDB-pzKQM": {
         advanced_search_filter: "{}",
-        api_endpoint: process.env.AstraDB_Url,
+        api_endpoint:
+          "https://74a66f90-7550-48ca-b738-c3d870a57681-us-east-2.apps.astra.datastax.com",
         batch_size: null,
         bulk_delete_concurrency: null,
         bulk_insert_batch_concurrency: null,
         bulk_insert_overwrite_concurrency: null,
         collection_indexing_policy: "",
-        collection_name: `${collectionName}`,
+        collection_name: "yo_20250110070724_f24f80f6",
         embedding_choice: "Embedding Model",
         keyspace: "",
         metadata_indexing_exclude: "",
@@ -187,16 +174,6 @@ async function main(
       (message) => console.log("Stream Closed:", message), // onClose
       (error) => console.log("Stream Error:", error) // onError
     );
-
-    console.log(
-      "mainn 2",
-      flowIdOrName,
-      langflowId,
-      inputValue,
-      inputType,
-      outputType
-    );
-
     if (!stream && response && response.outputs) {
       const flowOutputs = response.outputs[0];
       const firstComponentOutputs = flowOutputs.outputs[0];
@@ -209,6 +186,4 @@ async function main(
   }
 }
 
-// main("least liked post","yo_20250110062215_e4bc362c");
-
-module.exports = main;
+module.exports = main
