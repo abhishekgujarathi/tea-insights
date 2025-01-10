@@ -14,29 +14,29 @@ function App() {
   const [session, setSession] = useState("");
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchSession = async () => {
-      try {
-        const response = await fetch(`${SERVER_HOSTED_API}/test-session-set`, {
-          method: "GET",
-          credentials: "include", // Include cookies in the request
-        });
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data);
-          setSession(data.collectionName);
-        } else {
-          const errorData = await response.json();
-          setError(errorData.error || "Failed to fetch session.");
-        }
-      } catch (err) {
-        console.error("Error fetching session:", err);
-        setError("An unexpected error occurred.");
-      }
-    };
+  // useEffect(() => {
+  //   const fetchSession = async () => {
+  //     try {
+  //       const response = await fetch(`${SERVER_HOSTED_API}/test-session-set`, {
+  //         method: "GET",
+  //         credentials: "include", // Include cookies in the request
+  //       });
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         console.log(data);
+  //         setSession(data.collectionName);
+  //       } else {
+  //         const errorData = await response.json();
+  //         setError(errorData.error || "Failed to fetch session.");
+  //       }
+  //     } catch (err) {
+  //       console.error("Error fetching session:", err);
+  //       setError("An unexpected error occurred.");
+  //     }
+  //   };
 
-    fetchSession();
-  }, []); // Empty dependency array ensures it runs only once
+  //   // fetchSession();
+  // }, []); // Empty dependency array ensures it runs only once
 
   return (
     <ChartProvider>
