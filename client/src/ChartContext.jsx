@@ -10,6 +10,7 @@ export const ChartProvider = ({ children }) => {
   const [totalLikes, setTotalLikes] = useState(0);
   const [totalComments, setTotalComments] = useState(0);
   const [totalShares, setTotalShares] = useState(0);
+  const [session, setSession] = useState("");
 
   const [summary, setSummary] = useState(null);
   const [summaryError, setSummaryError] = useState(null);
@@ -37,6 +38,8 @@ export const ChartProvider = ({ children }) => {
         setSummaryError,
         askError,
         setAskError,
+        session,
+        setSession,
       }}
     >
       {children}

@@ -12,11 +12,12 @@ const SERVER_HOSTED_API = "http://192.168.1.12:3000";
 function Preview() {
 
   const {
+    session,
     fileContent
   } = useContext(ChartContext);
 
   const [isUploadSuccessful, setIsUploadSuccessful] = useState(false);
-  const [session, setSession] = useState("");
+  // const [session, setSession] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {

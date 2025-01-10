@@ -12,10 +12,7 @@ const FileUploadComponent = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate(); // Initialize the navigation hook
 
-  const {
-    fileContent,
-    setFileContent,
-  } = useContext(ChartContext);
+  const { fileContent, setFileContent, session } = useContext(ChartContext);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -31,16 +28,25 @@ const FileUploadComponent = ({ isOpen, onClose }) => {
     }
 
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", file); // Directly append the file from the state
+
+    // Optionally, add additional JSON data to the form
+    formData.append(
+      "jsonData",
+      JSON.stringify({
+        key1: "value1",
+        key2: "value2",
+      })
+    );
 
     try {
       const response = await fetch(`${SERVER_HOSTED_API}/upload`, {
         method: "POST",
         body: formData,
-        credentials: "include",
+        credentials: "include", // Allow cookies to be sent with the request
       });
 
-      console.log("epress response:",response)
+      console.log("Express response:", response);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -49,11 +55,11 @@ const FileUploadComponent = ({ isOpen, onClose }) => {
         setIsLoading(false);
         return;
       }
-     
+
       const data = await response.json();
-     
+
       console.log("File upload success:", data);
-      setFileContent(data.fileContent)
+      setFileContent(data.fileContent);
       alert(`File uploaded successfully: ${data.message}`);
       setIsLoading(false);
 

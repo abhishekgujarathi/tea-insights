@@ -49,7 +49,7 @@ const app = express();
 
 app.use(
   cors({
-    origin:true,
+    origin: true,
     credentials: true, // Allow cookies to be sent
   })
 );
@@ -115,83 +115,22 @@ app.post("/upload", file_upload.single("file"), async (req, res) => {
       return res.status(400).send({ error: "No file uploaded." });
     }
 
-    // Access the file content directly from buffer
-    // const dataString = req.file.buffer.toString("utf-8"); // Convert buffer to string
+    // Access the JSON data from the formData (it was appended as a string)
+    const jsonData = JSON.parse(req.body.jsonData); // Parse the JSON string
 
-    const dataString = `post_id,likes,comments,shares,post_date,post_time,views,post_type
-    1,1,203,122,09-06-2023,18:11:57,4438,carousel
-    2,240,197,130,06-02-2023,12:42:53,8436,post
-    3,484,216,217,18-06-2023,21:13:25,6592,post
-    4,952,305,78,14-08-2022,01:24:49,7165,carousel
-5,485,228,296,13-11-2022,02:43:00,4503,carousel
-6,419,499,139,04-11-2023,16:43:44,8477,carousel
-7,353,106,294,24-04-2022,07:53:13,2859,carousel
-8,849,365,104,03-12-2023,16:10:30,6396,reel
-9,647,226,195,20-07-2023,11:35:16,1542,post
-10,86,499,84,28-09-2023,04:16:22,8282,post
-11,123,245,110,05-05-2022,10:12:45,3568,carousel
-12,412,198,90,18-08-2023,13:35:22,4537,post
-13,598,323,150,29-09-2022,19:47:30,5032,carousel
-14,901,405,100,25-12-2022,21:05:11,7210,reel
-15,745,280,180,14-01-2023,14:17:35,6598,post
-16,312,147,70,11-03-2023,11:27:48,2765,carousel
-17,265,190,95,08-07-2022,08:34:55,3950,post
-18,810,430,250,17-10-2022,20:14:31,7384,reel
-19,562,310,140,21-02-2023,17:25:12,5873,post
-20,452,200,100,03-09-2023,09:18:23,4890,carousel
-21,612,325,190,22-05-2022,15:32:44,6534,carousel
-22,789,480,220,30-10-2022,16:42:13,7245,carousel
-23,214,130,80,07-04-2023,07:55:20,2987,post
-24,943,550,260,19-08-2023,20:30:18,8543,reel
-25,768,400,230,02-06-2023,11:45:33,6599,carousel
-26,412,220,120,13-12-2022,14:22:17,4580,post
-27,315,145,85,26-03-2023,10:05:49,3278,post
-28,984,510,290,08-11-2023,19:14:06,8702,reel
-29,674,330,170,18-07-2023,16:38:52,6049,carousel
-30,523,290,150,27-01-2023,12:29:45,4780,post
-31,854,460,200,09-09-2023,21:00:30,7342,carousel
-32,715,400,180,06-02-2022,18:15:41,6543,post
-33,198,125,75,20-06-2023,09:23:54,3157,post
-34,630,350,210,04-08-2022,22:30:11,5728,reel
-35,947,505,280,15-11-2022,20:40:26,8930,carousel
-36,512,270,160,01-01-2023,13:45:38,4869,post
-37,329,210,110,23-03-2023,15:50:49,3284,carousel
-38,714,370,200,12-07-2023,19:55:32,6487,reel
-39,852,490,250,31-10-2023,22:05:44,7358,carousel
-40,436,225,140,28-04-2022,11:22:30,4693,post
-41,890,540,300,06-06-2023,21:15:47,8156,reel
-42,398,190,95,11-09-2022,16:48:12,4210,carousel
-43,705,375,220,13-11-2023,20:32:08,6397,post
-44,923,495,270,07-07-2023,23:45:16,8645,carousel
-45,628,340,190,10-03-2023,13:50:42,5832,reel
-46,314,165,100,15-05-2022,14:12:56,3528,carousel
-47,742,400,230,02-10-2022,19:25:34,7032,reel
-48,817,480,270,27-12-2022,22:45:09,7510,carousel
-49,519,290,150,06-06-2023,10:05:38,5079,post
-50,394,190,90,25-08-2023,14:35:22,4223,carousel
-51,850,550,290,30-12-2023,21:15:43,8147,reel
-52,365,190,110,12-04-2023,16:23:38,4530,post
-53,719,375,220,18-06-2022,22:45:49,6348,carousel
-54,982,500,300,14-11-2022,23:05:17,8925,carousel
-55,401,210,130,29-01-2023,10:18:30,4798,post
-56,730,390,250,19-07-2023,20:30:44,6879,reel
-57,563,320,190,03-08-2022,19:05:28,5436,carousel
-58,218,130,90,11-09-2023,15:50:39,3247,post
-59,880,510,300,05-10-2023,22:30:14,7530,carousel
-60,482,240,140,22-03-2023,13:45:45,5017,post`;
+    // Access the file content directly from the buffer
+    const dataString = req.file.buffer.toString("utf-8"); // Convert buffer to string
 
     // Check for empty data
     if (!dataString) {
       return res.status(400).send({ error: "Empty file content." });
     }
 
-    // Access the collection name from the session
-    const collectionName = req.session;
+    // Check for missing collection name in the session
+    const collectionName = req.session.collectionName; // Assuming collectionName is stored in session
     console.log("Session Collection Name:", collectionName);
-    return res
-      .status(200)
-      .json({ dataString: dataString, sessionn: collectionName });
 
+    // If collection name is found in session
     if (collectionName) {
       await createAstraCollection(collectionName);
 
@@ -205,6 +144,7 @@ app.post("/upload", file_upload.single("file"), async (req, res) => {
         result: result, // Optionally include the processing result
         collectionName: collectionName,
         fileContent: dataString, // Include file content in the response
+        jsonData: jsonData, // Include the JSON data in the response
       });
     } else {
       // Handle missing session data
