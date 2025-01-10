@@ -85,7 +85,16 @@ class LangflowClient {
     onClose,
     onError
   ) {
-    console.log("running flow")
+    console.log(
+      "running flow",
+      flowIdOrName,
+      langflowId,
+      inputValue,
+      inputType,
+      outputType,
+      stream,
+      tweaks
+    );
     try {
       const initResponse = await this.initiateSession(
         flowIdOrName,
