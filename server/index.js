@@ -195,7 +195,7 @@ app.get("/question-choice", async (req, res) => {
 // Start -------------------------Get Summery ------------------
 
 app.post("/get-summery", async (req, res) => {
-  let collectionName = req.session.collectionName || "NONE";
+  let collectionName = req.body.collectionName || "NONE";
   console.log("right now collection summary : ", collectionName);
 
   // return res.status(200).send({
@@ -259,8 +259,8 @@ app.post("/get-summery", async (req, res) => {
 // End -------------------------Get Summery ------------------
 
 app.post("/fetch-file", (req, res) => {
-  const sessionCollectionName = req.session.collectionName;
-
+  const sessionCollectionName = req.body.collectionName;
+  
   if (!sessionCollectionName) {
     return res
       .status(400)

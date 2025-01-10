@@ -9,7 +9,8 @@ import { Helmet } from "react-helmet";
 
 import ChartContext from "../ChartContext";
 
-const SERVER_HOSTED_API = "http://192.168.1.12:3000";
+// const SERVER_HOSTED_API = "http://192.168.1.12:3000";
+const SERVER_HOSTED_API = "https://tea-insights-api.vercel.app";
 
 const ChartView = ({ sessionCollectionName, removeSession }) => {
   // const [fileContent, setFileContent] = useState(null);
@@ -40,6 +41,7 @@ const ChartView = ({ sessionCollectionName, removeSession }) => {
     setTotalComments,
     totalShares,
     setTotalShares,
+    session,
   } = useContext(ChartContext);
 
   useEffect(() => {
@@ -48,7 +50,7 @@ const ChartView = ({ sessionCollectionName, removeSession }) => {
         const response = await fetch(`${SERVER_HOSTED_API}/fetch-file`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ fileContent }), // Correctly stringify the body
+          body: JSON.stringify({ fileContent, collectionName: session }), // Correctly stringify the body
           credentials: "include",
         });
 

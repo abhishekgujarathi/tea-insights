@@ -4,17 +4,12 @@ import ChartView from "./ChartView";
 import ChatApp from "./ChatApp";
 import NavBar from "./NavBar";
 
-
 import ChartContext from "../ChartContext";
 
 const SERVER_HOSTED_API = "http://192.168.1.12:3000";
 
 function Preview() {
-
-  const {
-    session,
-    fileContent
-  } = useContext(ChartContext);
+  const { session, fileContent } = useContext(ChartContext);
 
   const [isUploadSuccessful, setIsUploadSuccessful] = useState(false);
   // const [session, setSession] = useState("");
@@ -26,6 +21,9 @@ function Preview() {
         const response = await fetch(`${SERVER_HOSTED_API}/test-session-set`, {
           method: "GET",
           credentials: "include", // Include cookies in the request
+          body: JSON.stringify({
+            collectionName: session,
+          }),
         });
         if (response.ok) {
           const data = await response.json();
@@ -48,12 +46,11 @@ function Preview() {
     setIsUploadSuccessful(true);
   };
 
-  console.log("The file content:" ,fileContent)
+  console.log("The file content:", fileContent);
 
   return (
-
     <div>
-      <NavBar />  
+      <NavBar />
       <p>Session: {session}</p>
       <ChartView sessionCollectionName={session} />
     </div>
