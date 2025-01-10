@@ -130,6 +130,8 @@ async function main(
     applicationToken
   );
 
+  console.log("mainn 1");
+
   try {
     const tweaks = {
       "ChatInput-yr5CJ": {},
@@ -174,6 +176,16 @@ async function main(
       (message) => console.log("Stream Closed:", message), // onClose
       (error) => console.log("Stream Error:", error) // onError
     );
+
+    console.log(
+      "mainn 2",
+      flowIdOrName,
+      langflowId,
+      inputValue,
+      inputType,
+      outputType
+    );
+
     if (!stream && response && response.outputs) {
       const flowOutputs = response.outputs[0];
       const firstComponentOutputs = flowOutputs.outputs[0];
@@ -188,4 +200,4 @@ async function main(
 
 // main("least liked post","yo_20250110062215_e4bc362c");
 
-module.exports=main
+module.exports = main;
