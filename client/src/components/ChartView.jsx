@@ -141,7 +141,7 @@ const ChartView = ({ sessionCollectionName, removeSession }) => {
             </div>
 
             <div className="bg-white text-gray-950 h-fit max-h-fit">
-              <SummaryStats />
+              <SummaryStats sessionCollectionName={sessionCollectionName} />
             </div>
             <div className="bg-white text-gray-950 h-fit max-h-fit w-full">
               <PreviewTable fileData={fileContent} />
