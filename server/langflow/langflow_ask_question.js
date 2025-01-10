@@ -1,9 +1,6 @@
-const { response } = require("express");
+// Note: Replace **<YOUR_APPLICATION_TOKEN>** with your actual Application token
 const dotenv = require("dotenv");
 dotenv.config();
-
-// Note: Replace *<YOUR_APPLICATION_TOKEN>* with your actual Application token
-// Note: Replace *<YOUR_APPLICATION_TOKEN>* with your actual Application token
 
 class LangflowClient {
   constructor(baseURL, applicationToken) {
@@ -135,9 +132,7 @@ async function main(
 
   try {
     const tweaks = {
-      "ChatInput-yr5CJ": {
-        input_value: "least liked post",
-      },
+      "ChatInput-yr5CJ": {},
       "AstraDB-pzKQM": {
         advanced_search_filter: "{}",
         api_endpoint: process.env.AstraDB_Url,
@@ -167,7 +162,7 @@ async function main(
       "Google Generative AI Embeddings-umszD": {},
       "GoogleGenerativeAIModel-pRN4f": {},
     };
-    const langResponse = await langflowClient.runFlow(
+    response = await langflowClient.runFlow(
       flowIdOrName,
       langflowId,
       inputValue,
@@ -179,8 +174,8 @@ async function main(
       (message) => console.log("Stream Closed:", message), // onClose
       (error) => console.log("Stream Error:", error) // onError
     );
-    if (!stream && langResponse && langResponse.outputs) {
-      const flowOutputs = langResponse.outputs[0];
+    if (!stream && response && response.outputs) {
+      const flowOutputs = response.outputs[0];
       const firstComponentOutputs = flowOutputs.outputs[0];
       const output = firstComponentOutputs.outputs.message;
 
@@ -190,4 +185,7 @@ async function main(
     console.error("Main Error", error.message);
   }
 }
-module.exports = main;
+
+// main("least liked post","yo_20250110062215_e4bc362c");
+
+module.exports=main
