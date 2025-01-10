@@ -13,9 +13,9 @@ const SessionTestComponent = () => {
       try {
         // Make the first fetch request to set the session
         const response = await fetch(
-          "http://tea-insights-api.vercel.app/test-session-set",
+          "https://tea-insights-api.vercel.app/test-session-set",
           {
-            method: "POST",
+            method: "GET",
             headers: {
               "Content-Type": "application/json",
             },

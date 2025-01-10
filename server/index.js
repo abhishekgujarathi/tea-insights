@@ -90,6 +90,7 @@ const file_upload = multer({
 
 // ----------- session create
 app.get("/", (req, res) => {
+  console.log("home",req.session)
   res.send("working").status(200);
 });
 
