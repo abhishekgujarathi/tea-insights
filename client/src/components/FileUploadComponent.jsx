@@ -34,8 +34,7 @@ const FileUploadComponent = ({ isOpen, onClose }) => {
     formData.append(
       "jsonData",
       JSON.stringify({
-        key1: "value1",
-        key2: "value2",
+        collectionName: session,
       })
     );
 

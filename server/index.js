@@ -117,6 +117,7 @@ app.post("/upload", file_upload.single("file"), async (req, res) => {
 
     // Access the JSON data from the formData (it was appended as a string)
     const jsonData = JSON.parse(req.body.jsonData); // Parse the JSON string
+    console.log("json",jsonData)
 
     // Access the file content directly from the buffer
     const dataString = req.file.buffer.toString("utf-8"); // Convert buffer to string
