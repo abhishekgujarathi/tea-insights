@@ -337,7 +337,10 @@ app.post("/fetch", async (req, res) => {
   //   console.error("Error fetching data:", error.message);
   //   res.status(500).json({ error: "Failed to fetch data from external API" });
   // }
+
+
   // -----------------------
+  console.log("fetch - ",req.body)
   const sessionCollectionName = req.body.collectionName || "NONE";
 
   console.log("right now collection : ", sessionCollectionName);
