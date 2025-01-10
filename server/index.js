@@ -14,7 +14,11 @@ import {
   generateUniqueCollectionName,
 } from "./utils.js";
 
-import {langFlowAskQuestion, callLangFlowAsk as langFlowAsk, callMain } from "./langflow_utils.js";
+import {
+  langFlowAskQuestion,
+  callLangFlowAsk as langFlowAsk,
+  callMain,
+} from "./langflow_utils.js";
 
 import dotenv from "dotenv";
 dotenv.config(); // Load environment variables
@@ -320,62 +324,56 @@ app.post("/fetch-file", (req, res) => {
 // ----------------- routes -------------------------------------
 
 app.post("/fetch", async (req, res) => {
-  // const { input } = req.body;
-  // console.log(req.body)
-  // // return res.send(req.body);
-  // if (!input) {
-  //   return res.status(400).json({ error: "Input invalid" });
-  // }
+  console.log("fetch - ", req.body);
 
-  // console.log(req.body)
-
-  // try {
-  //   const response = await langflow_sujal(input);
-  //   console.log(response);
-  //   res.status(200).json({ userData: response });
-  // } catch (error) {
-  //   console.error("Error fetching data:", error.message);
-  //   res.status(500).json({ error: "Failed to fetch data from external API" });
-  // }
-
-
-  // -----------------------
-  console.log("fetch - ",req.body)
   const sessionCollectionName = req.body.collectionName || "NONE";
-
-  console.log("right now collection : ", sessionCollectionName);
-  // console.log("right now question : ", req.body.input);
+  console.log("Right now collection: ", sessionCollectionName);
 
   const questionTOAsk = req.body.input;
 
+  if (!questionTOAsk) {
+    return res.status(400).json({ error: "Input is invalid or missing." });
+  }
+
   if (sessionCollectionName) {
     try {
-      // const result = await langFlowAsk(questionTOAsk, collectionName);
-      const result=await langFlowAskQuestion(questionTOAsk,sessionCollectionName)
-      // console.log("Bitch", collectionName)
+      const result = await langFlowAskQuestion(
+        questionTOAsk,
+        sessionCollectionName
+      );
 
       if (result && result.success) {
-        console.log("my result : ", result);
-        return res.status(200).send({
+        console.log("Result: ", result);
+        return res.status(200).json({
           success: true,
           message: `Processing completed successfully with collection: ${sessionCollectionName}`,
-          result: result.result, // Optionally send the result
+          result: result.result,
         });
       } else {
-        return res.status(400).send({
+        return res.status(400).json({
           success: false,
-          message: `Error processing request.`,
+          message: "Error processing request.",
         });
       }
     } catch (error) {
-      console.error("Error in /question-choice route:", error);
-      return res.status(400).send({ error: error.message });
+      console.error("Error in /fetch route:", error);
+
+      // Check if the error message is JSON parsable
+      try {
+        const parsedError = JSON.parse(error.message);
+        return res.status(400).json({ error: parsedError });
+      } catch (parsingError) {
+        return res.status(500).send({
+          error: "An unexpected error occurred.",
+          message: error.message,
+        });
+      }
     }
   } else {
-    // If collection name is not found in session
+    // If collection name is not found in the request body
     return res
       .status(400)
-      .send({ error: "Collection name not found in session." });
+      .json({ error: "Collection name is missing or invalid." });
   }
 });
 
