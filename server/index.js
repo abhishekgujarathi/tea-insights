@@ -176,9 +176,11 @@ app.post("/upload", file_upload.single("file"), async (req, res) => {
     }
 
     // Access the collection name from the session
-    const collectionName = req.session.collectionName;
+    const collectionName = req.session;
     console.log("Session Collection Name:", collectionName);
-    return res.status(200).json({ dataString, collectionName });
+    return res
+      .status(200)
+      .json({ dataString: dataString, sessionn: collectionName });
 
     if (collectionName) {
       await createAstraCollection(collectionName);
