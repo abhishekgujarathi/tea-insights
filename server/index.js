@@ -344,11 +344,11 @@ app.post("/fetch", async (req, res) => {
   const sessionCollectionName = req.body.collectionName || "NONE";
 
   console.log("right now collection : ", sessionCollectionName);
-  console.log("right now question : ", req.body.input);
+  // console.log("right now question : ", req.body.input);
 
   const questionTOAsk = req.body.input;
 
-  if (collectionName) {
+  if (sessionCollectionName) {
     try {
       // const result = await langFlowAsk(questionTOAsk, collectionName);
       const result=await langFlowAskQuestion(questionTOAsk,sessionCollectionName)
@@ -358,7 +358,7 @@ app.post("/fetch", async (req, res) => {
         console.log("my result : ", result);
         return res.status(200).send({
           success: true,
-          message: `Processing completed successfully with collection: ${collectionName}`,
+          message: `Processing completed successfully with collection: ${sessionCollectionName}`,
           result: result.result, // Optionally send the result
         });
       } else {
