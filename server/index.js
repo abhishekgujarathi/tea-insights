@@ -20,8 +20,8 @@ import dotenv from "dotenv";
 dotenv.config(); // Load environment variables
 
 // Correctly initialize base_filename and base_dirname
-const base_filename = __filename // Full path to the current file
-const base_dirname = __dirname // Directory name of the current file
+// const base_filename = __filename // Full path to the current file
+// const base_dirname = __dirname // Directory name of the current file
 
 // Universal solution to get __filename and __dirname
 // const isESM = typeof __filename === "undefined"; // Check if running in ESM
@@ -100,6 +100,7 @@ app.get("/test-session-set", (req, res) => {
 
 // ---------- Upload Endpoint
 app.post("/upload", file_upload.single("file"), async (req, res) => {
+  res.send("good")
   try {
     if (!req.file) {
       return res.status(400).send({ error: "No file uploaded." });
