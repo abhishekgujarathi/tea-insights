@@ -104,16 +104,15 @@ app.post("/upload", file_upload.single("file"), async (req, res) => {
     if (!req.file) {
       return res.status(400).send({ error: "No file uploaded." });
     }
-    return res.status(200).send("good");
 
     // Access the file content directly from buffer
     // const dataString = req.file.buffer.toString("utf-8"); // Convert buffer to string
 
     const dataString = `post_id,likes,comments,shares,post_date,post_time,views,post_type
-1,1,203,122,09-06-2023,18:11:57,4438,carousel
-2,240,197,130,06-02-2023,12:42:53,8436,post
-3,484,216,217,18-06-2023,21:13:25,6592,post
-4,952,305,78,14-08-2022,01:24:49,7165,carousel
+    1,1,203,122,09-06-2023,18:11:57,4438,carousel
+    2,240,197,130,06-02-2023,12:42:53,8436,post
+    3,484,216,217,18-06-2023,21:13:25,6592,post
+    4,952,305,78,14-08-2022,01:24:49,7165,carousel
 5,485,228,296,13-11-2022,02:43:00,4503,carousel
 6,419,499,139,04-11-2023,16:43:44,8477,carousel
 7,353,106,294,24-04-2022,07:53:13,2859,carousel
@@ -170,6 +169,7 @@ app.post("/upload", file_upload.single("file"), async (req, res) => {
 58,218,130,90,11-09-2023,15:50:39,3247,post
 59,880,510,300,05-10-2023,22:30:14,7530,carousel
 60,482,240,140,22-03-2023,13:45:45,5017,post`;
+    return res.status(200).json({ dataString });
 
     const data = await req.session.collectionName;
 
