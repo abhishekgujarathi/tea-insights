@@ -43,6 +43,7 @@ class LangflowClient {
     tweaks = {}
   ) {
     const endpoint = `/lf/${langflowId}/api/v1/run/${flowId}?stream=${stream}`;
+    console.log("running intiation ",endpoint)
     return this.post(endpoint, {
       input_value: inputValue,
       input_type: inputType,
