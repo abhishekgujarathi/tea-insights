@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate
 import LoadingAnimation from "./UploadLoading";
 import ChartContext from "../ChartContext";
 
-// const SERVER_HOSTED_API = "http://192.168.1.12:3000";
-const SERVER_HOSTED_API = "https://tea-insights-api.vercel.app";
+const SERVER_HOSTED_API = "http://192.168.1.12:3000";
+// const SERVER_HOSTED_API = "https://tea-insights-api.vercel.app";
 
 const FileUploadComponent = ({ isOpen, onClose }) => {
   const [file, setFile] = useState(null);

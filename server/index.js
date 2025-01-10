@@ -128,7 +128,7 @@ app.post("/upload", file_upload.single("file"), async (req, res) => {
     }
 
     // Check for missing collection name in the session
-    const collectionName = req.session.collectionName; // Assuming collectionName is stored in session
+    const collectionName = jsonData.collectionName; // Assuming collectionName is stored in session
     console.log("Session Collection Name:", collectionName);
 
     // If collection name is found in session

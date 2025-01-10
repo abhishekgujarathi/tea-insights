@@ -6,8 +6,8 @@ import Team from "./Team";
 
 import ChartContext, { ChartProvider } from "../ChartContext";
 
-// const SERVER_HOSTED_API = "http://192.168.1.12:3000";
-const SERVER_HOSTED_API = "https://tea-insights-api.vercel.app";
+const SERVER_HOSTED_API = "http://192.168.1.12:3000";
+// const SERVER_HOSTED_API = "https://tea-insights-api.vercel.app";
 
 function Home() {
   const [isUploadSuccessful, setIsUploadSuccessful] = useState(false);
