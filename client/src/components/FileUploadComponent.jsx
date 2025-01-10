@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate
 import LoadingAnimation from "./UploadLoading";
 import ChartContext from "../ChartContext";
 
-const SERVER_HOSTED_API = "http://192.168.1.12:3000";
+// const SERVER_HOSTED_API = "http://192.168.1.12:3000";
+const SERVER_HOSTED_API = "https://tea-insights-api.vercel.app";
 
 const FileUploadComponent = ({ isOpen, onClose }) => {
   const [file, setFile] = useState(null);
@@ -39,6 +40,8 @@ const FileUploadComponent = ({ isOpen, onClose }) => {
         credentials: "include",
       });
 
+      console.log("epress response:",response)
+
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error response from server:", errorData);
@@ -46,8 +49,9 @@ const FileUploadComponent = ({ isOpen, onClose }) => {
         setIsLoading(false);
         return;
       }
-
+     
       const data = await response.json();
+     
       console.log("File upload success:", data);
       setFileContent(data.fileContent)
       alert(`File uploaded successfully: ${data.message}`);
