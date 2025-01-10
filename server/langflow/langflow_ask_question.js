@@ -124,7 +124,7 @@ async function main(
 ) {
   const flowIdOrName = "105151d3-c1f9-47d8-9fb5-79ad313b0558";
   const langflowId = "3203e051-8a37-49eb-9dda-0225f0f47176";
-  const applicationToken = process.env.LangflowSujalToken;
+  const applicationToken = "AstraCS:dJnEjCZcEJgwZxRLIxGZqqyY:301c9b8d8f896afb979978e0a6d4a247266fed7f8b733fbb0b4c9a9f7951e54f";
   const langflowClient = new LangflowClient(
     "https://api.langflow.astra.datastax.com",
     applicationToken
@@ -135,7 +135,7 @@ async function main(
       "ChatInput-yr5CJ": {},
       "AstraDB-pzKQM": {
         advanced_search_filter: "{}",
-        api_endpoint: process.env.AstraDB_Url,
+        api_endpoint: "https://74a66f90-7550-48ca-b738-c3d870a57681-us-east-2.apps.astra.datastax.com",
         batch_size: null,
         bulk_delete_concurrency: null,
         bulk_insert_batch_concurrency: null,
