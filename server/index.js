@@ -20,8 +20,8 @@ import dotenv from "dotenv";
 dotenv.config(); // Load environment variables
 
 // Correctly initialize base_filename and base_dirname
-const base_filename = __filename // Full path to the current file
-const base_dirname = __dirname // Directory name of the current file
+// const base_filename = __filename; // Full path to the current file
+// const base_dirname = __dirname; // Directory name of the current file
 
 // Universal solution to get __filename and __dirname
 // const isESM = typeof __filename === "undefined"; // Check if running in ESM
@@ -70,8 +70,8 @@ const file_upload = multer({
   },
   fileFilter: (req, file, cb) => {
     // Optional: Validate file type (e.g., only allow CSV)
-    if (file.mimetype !== 'text/csv') {
-      return cb(new Error('Invalid file type. Only CSV files are allowed.'));
+    if (file.mimetype !== "text/csv") {
+      return cb(new Error("Invalid file type. Only CSV files are allowed."));
     }
     cb(null, true);
   },
@@ -100,16 +100,16 @@ app.get("/test-session-set", (req, res) => {
 
 // ---------- Upload Endpoint
 app.post("/upload", file_upload.single("file"), async (req, res) => {
-  res.send("good")
   try {
     if (!req.file) {
       return res.status(400).send({ error: "No file uploaded." });
     }
+    return res.status(200).send("good");
 
     // Access the file content directly from buffer
     // const dataString = req.file.buffer.toString("utf-8"); // Convert buffer to string
 
-    const dataString=`post_id,likes,comments,shares,post_date,post_time,views,post_type
+    const dataString = `post_id,likes,comments,shares,post_date,post_time,views,post_type
 1,1,203,122,09-06-2023,18:11:57,4438,carousel
 2,240,197,130,06-02-2023,12:42:53,8436,post
 3,484,216,217,18-06-2023,21:13:25,6592,post
@@ -169,13 +169,13 @@ app.post("/upload", file_upload.single("file"), async (req, res) => {
 57,563,320,190,03-08-2022,19:05:28,5436,carousel
 58,218,130,90,11-09-2023,15:50:39,3247,post
 59,880,510,300,05-10-2023,22:30:14,7530,carousel
-60,482,240,140,22-03-2023,13:45:45,5017,post`
+60,482,240,140,22-03-2023,13:45:45,5017,post`;
 
-    const data = await req.session.collectionName
+    const data = await req.session.collectionName;
 
-    console.log("yooyoyo",data)
+    console.log("yooyoyo", data);
 
-    // return res.send({fileContent: dataString}) 
+    // return res.send({fileContent: dataString})
     // Check for empty data
     if (!dataString) {
       return res.status(400).send({ error: "Empty file content." });
