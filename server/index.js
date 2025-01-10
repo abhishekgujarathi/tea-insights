@@ -169,13 +169,7 @@ app.post("/upload", file_upload.single("file"), async (req, res) => {
 58,218,130,90,11-09-2023,15:50:39,3247,post
 59,880,510,300,05-10-2023,22:30:14,7530,carousel
 60,482,240,140,22-03-2023,13:45:45,5017,post`;
-    return res.status(200).json({ dataString });
 
-    const data = await req.session.collectionName;
-
-    console.log("yooyoyo", data);
-
-    // return res.send({fileContent: dataString})
     // Check for empty data
     if (!dataString) {
       return res.status(400).send({ error: "Empty file content." });
@@ -184,6 +178,7 @@ app.post("/upload", file_upload.single("file"), async (req, res) => {
     // Access the collection name from the session
     const collectionName = req.session.collectionName;
     console.log("Session Collection Name:", collectionName);
+    return res.status(200).json({ dataString, collectionName });
 
     if (collectionName) {
       await createAstraCollection(collectionName);
