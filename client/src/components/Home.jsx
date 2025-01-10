@@ -13,7 +13,8 @@ const SessionTestComponent = () => {
       try {
         // Make the first fetch request to set the session
         const response = await fetch(
-          "https://tea-insights-api.vercel.app/test-session-set",
+          "http://localhost:3000/test-session-set",
+          // "https://tea-insights-api.vercel.app/test-session-set",
           {
             method: "GET",
             headers: {
@@ -23,7 +24,7 @@ const SessionTestComponent = () => {
           }
         );
 
-        const data = await response.json();
+        // const data = awaitxF response.json();
         if (response.ok) {
           console.log("Session set successfully:", data);
           setSessionStatus("Session set successfully.");
@@ -41,20 +42,17 @@ const SessionTestComponent = () => {
     const uploadFileTest = async () => {
       try {
         // Make the second fetch request to upload file
-        const uploadResponse = await fetch(
-          "https://tea-insights-api.vercel.app/upload",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              // Pass the content to upload (for testing purposes, you can pass a dummy file content or test data)
-              fileContent: "dummy file content for testing",
-            }),
-            credentials: "include", // Ensure session is maintained
-          }
-        );
+        const uploadResponse = await fetch("http://localhost:3000/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // body: JSON.stringify({
+          //   // Pass the content to upload (for testing purposes, you can pass a dummy file content or test data)
+          //   fileContent: "dummy file content for testing",
+          // }),
+          credentials: "include", // Ensure session is maintained
+        });
 
         const uploadData = await uploadResponse.json();
         if (uploadResponse.ok) {

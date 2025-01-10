@@ -46,9 +46,10 @@ const app = express();
 //     credentials: true, // Allow cookies to be sent
 //   })
 // );
+
 app.use(
   cors({
-    origin: true, // Allow all origins
+    origin:true,
     credentials: true, // Allow cookies to be sent
   })
 );
@@ -58,12 +59,13 @@ app.use(express.json());
 // Session Middleware
 app.use(
   session({
-    secret: "your_secret_key",
+    secret: "your-secret-key",
     resave: false,
     saveUninitialized: true,
     cookie: {
-      httpOnly: false,
-      secure: true, // TODO: Set to true for HTTPS
+      secure: process.env.NODE_ENV === "production", // Secure cookie in production
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
     },
   })
 );
@@ -90,7 +92,7 @@ const file_upload = multer({
 
 // ----------- session create
 app.get("/", (req, res) => {
-  console.log("home",req.session)
+  console.log("home", req.session);
   res.send("working").status(200);
 });
 
