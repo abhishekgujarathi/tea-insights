@@ -63,48 +63,45 @@ const SummaryStats = ({ sessionCollectionName }) => {
   return (
     <div className="chatgpt-ui bg-white text-gray-950 p-6 h-fit">
       <div className="response text-lg leading-relaxed p-[35px] rounded-lg border-2 mx-[25px] h-fit">
-        <h2 className="text-2xl font-bold mb-6">Post Engagement Summary</h2>
-  
-        {/* Summary Section */}
-        {summary && (
-          <div className="mb-6">
-            <h3 className="font-semibold text-xl mb-2">Summary of Post Types</h3>
-            <div className="grid grid-cols-3 gap-6">
-              {Object.entries(summary).map(([postType, data], index) => (
-                <div key={index} className="border p-4 rounded-md shadow-md">
-                  <h4 className="font-semibold">{postType}</h4>
-                  <ul className="space-y-2">
-                    {Object.entries(data).map(([metric, value], i) => (
-                      <li key={i}>
-                        <strong>{metric}:</strong> {value}
-                      </li>
-                    ))}
-                  </ul>
+        <h2 className="text-2xl font-bold mb-4 h-fit">
+          Post Engagement Summary
+        </h2>
+
+        {/* Splitting the string into sections based on the headers */}
+        {data &&
+          data.split("### ").map((section, index) => {
+            const formattedSection = section.trim();
+
+            // Only display non-empty sections
+            if (formattedSection) {
+              let sectionTitle = formattedSection.split("\n")[0];
+              let sectionContent = formattedSection
+                .substring(sectionTitle.length)
+                .trim();
+
+              return (
+                <div key={index} className="mb-6">
+                  {/* Render the title of the section */}
+                  <h3 className="text-xl font-bold mb-2">{sectionTitle}</h3>
+
+                  {/* Render the content of the section */}
+                  {sectionContent.split("\n").map((line, i) => {
+                    const formattedLine = line.replace(
+                      /\*\*(.*?)\*\*/g,
+                      "<strong>$1</strong>"
+                    );
+                    return (
+                      <p
+                        key={i}
+                        className="mb-4 text-gray-950"
+                        dangerouslySetInnerHTML={{ __html: formattedLine }}
+                      />
+                    );
+                  })}
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
-  
-        {/* Insights Section */}
-        <div className="mb-6">
-          <h3 className="font-semibold text-xl mb-2">Key Insights</h3>
-          <ul className="space-y-3">
-            {insights && insights.map((insight, index) => (
-              <li key={index} className="border-l-4 border-blue-600 pl-4">{insight}</li>
-            ))}
-          </ul>
-        </div>
-  
-        {/* Recommendations Section */}
-        <div>
-          <h3 className="font-semibold text-xl mb-2">Recommendations</h3>
-          <ul className="space-y-3">
-            {recommendations && recommendations.map((recommendation, index) => (
-              <li key={index} className="border-l-4 border-green-600 pl-4">{recommendation}</li>
-            ))}
-          </ul>
-        </div>
+              );
+            }
+          })}
       </div>
     </div>
   );
