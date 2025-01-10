@@ -49,8 +49,8 @@ This project is a comprehensive platform for uploading CSV data, generating AI-d
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-repo-name.git
-   cd your-repo-name
+   git clone https://github.com/joker45op/tea-insights.git
+   cd tea-insights
    ```
 
 2. **Install Dependencies**
@@ -82,7 +82,7 @@ This project is a comprehensive platform for uploading CSV data, generating AI-d
    - Start the frontend development server:
      ```bash
      cd client
-     npm start
+     npm run dev
      ```
 
 ---
@@ -107,13 +107,10 @@ project-root
 ├── client
 │   ├── src
 │   │   ├── components
-│   │   ├── pages
 │   │   └── App.js
 ├── server
-│   ├── routes
-│   ├── controllers
 │   ├── utils
-│   └── app.js
+│   └── index.js
 ├── README.md
 └── package.json
 ```
