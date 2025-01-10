@@ -5,7 +5,7 @@ export async function callLangFlowAsk(inputQuestion, collectionName) {
   try {
     const result = await langFlowAsk(inputQuestion, collectionName);
 
-    console.log("Yoohoho")
+    console.log("Yoohoho") 
 
     // Check if the result contains a success flag (this depends on how your `main` function works)
     if (result && result.success) {
