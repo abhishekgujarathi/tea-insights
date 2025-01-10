@@ -96,7 +96,7 @@ async function main(inputValue, collectionName, inputType = 'chat', outputType =
     "text_color": ""
   },
   "AstraDB-pzKQM": {"advanced_search_filter": "{}",
-    "api_endpoint": "https://74a66f90-7550-48ca-b738-c3d870a57681-us-east-2.apps.astra.datastax.com",
+    "api_endpoint": process.env.AstraDB_Url,
     "batch_size": null,
     "bulk_delete_concurrency": null,
     "bulk_insert_batch_concurrency": null,
