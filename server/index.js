@@ -99,10 +99,7 @@ app.get("/", (req, res) => {
 app.get("/test-session-set", (req, res) => {
   // Generate a collection name if it doesn't already exist in the session
   const sessionCollectionName =
-    req.session.collectionName || generateUniqueCollectionName();
-
-  // Store the collection name in the session
-  req.session.collectionName = sessionCollectionName;
+    req.body.collectionName || generateUniqueCollectionName();
 
   // Respond with the collection name
   return res.status(200).json({ collectionName: sessionCollectionName });
@@ -117,7 +114,7 @@ app.post("/upload", file_upload.single("file"), async (req, res) => {
 
     // Access the JSON data from the formData (it was appended as a string)
     const jsonData = JSON.parse(req.body.jsonData); // Parse the JSON string
-    console.log("json",jsonData)
+    console.log("json", jsonData);
 
     // Access the file content directly from the buffer
     const dataString = req.file.buffer.toString("utf-8"); // Convert buffer to string
@@ -260,7 +257,7 @@ app.post("/get-summery", async (req, res) => {
 
 app.post("/fetch-file", (req, res) => {
   const sessionCollectionName = req.body.collectionName;
-  
+
   if (!sessionCollectionName) {
     return res
       .status(400)

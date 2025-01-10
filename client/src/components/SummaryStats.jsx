@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-const SERVER_HOSTED_API = "http://192.168.1.12:3000";
+// const SERVER_HOSTED_API = "http://192.168.1.12:3000";
+const SERVER_HOSTED_API = "https://tea-insights-api.vercel.app";
 
 const SummaryStats = ({ sessionCollectionName }) => {
   const [summary, setSummary] = useState(null);
@@ -18,6 +19,9 @@ const SummaryStats = ({ sessionCollectionName }) => {
           "Content-Type": "application/json",
         },
         credentials: "include",
+        body: JSON.stringify({
+          collectionName: sessionCollectionName,
+        }),
       });
 
       if (!response.ok) {
