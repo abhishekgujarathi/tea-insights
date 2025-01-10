@@ -206,6 +206,6 @@ async function main(
   }
 }
 
-main("most liked", "yo_20250110070724_f24f80f6");
+// main("most liked", "yo_20250110070724_f24f80f6");
 
 module.exports = main;
