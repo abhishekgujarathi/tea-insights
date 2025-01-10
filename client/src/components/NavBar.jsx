@@ -30,7 +30,12 @@ const NavBar = () => {
 
       {/* Conditional Buttons */}
       {location.pathname === "/" ? (
-        <button onClick={handleOpenModal}>Get Started</button>
+        <button
+          className="bg-white text-black px-6 py-2 shadow hover:bg-gray-200"
+          onClick={handleOpenModal}
+        >
+          Get Started
+        </button>
       ) : location.pathname === "/preview" ? (
         // <div className="flex items-center justify-center w-full">
         <button
