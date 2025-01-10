@@ -182,8 +182,8 @@ async function main(
     //   console.log("Final Output:", output.message.text);
     // }
 
-    if (!stream && langResponse && langResponse.outputs) {
-      const flowOutputs = langResponse.outputs[0];
+    if (!stream && response && response.outputs) {
+      const flowOutputs = response.outputs[0];
       const firstComponentOutputs = flowOutputs.outputs[0];
       const output = firstComponentOutputs.outputs.message;
 
