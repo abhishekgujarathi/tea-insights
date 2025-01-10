@@ -44,6 +44,8 @@ const ChatApp = ({ sessionCollectionName }) => {
     setIsLoading(true);
 
     try {
+      console.log("Hello",sessionCollectionName);
+
       const response = await fetch(`${SERVER_HOSTED_API}/fetch`, {
         method: "POST",
         headers: {
@@ -56,7 +58,6 @@ const ChatApp = ({ sessionCollectionName }) => {
         }),
       });
 
-      console.log("Hello",sessionCollectionName, message);
 
       if (!response.ok) {
         throw new Error("Failed to fetch response from the backend.");
