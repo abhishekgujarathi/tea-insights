@@ -30,13 +30,13 @@ function LandPage() {
             Boost your engagement strategies with AI-powered analytics. Gain valuable insights to grow your audience and optimize your social media performance effortlessly.
           </p>
           <div className="mt-6 flex space-x-4">
-            <a href="https://youtu.be/sU3kPm-2nXc?si=XD69j9VzamK2429O" className="bg-black text-white px-6 py-3 rounded-lg shadow hover:bg-gray-900" onClick={handleOpenModal}>
+            <button className="bg-black text-white px-6 py-3 rounded-lg shadow hover:bg-gray-900" onClick={handleOpenModal}>
               Get Started
-            </a>
-            
-            <button className="bg-white text-black border border-black px-6 py-3 rounded-lg shadow hover:bg-gray-100">
-              View Demo
             </button>
+            
+            <a href="https://youtu.be/sU3kPm-2nXc?si=XD69j9VzamK2429O" className="bg-white text-black border border-black px-6 py-3 rounded-lg shadow hover:bg-gray-100">
+              View Demo
+            </a>
           </div>
         </div>
         <div>
